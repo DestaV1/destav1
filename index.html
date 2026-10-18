@@ -202,6 +202,11 @@ body{background:#080a0f}
 .itscale-options{margin-top:22px}
 </style>
 
+<style id="destav1-status-layout-and-eta">
+#upload-method .upload-actions{display:flex;flex-direction:column;align-items:center;gap:10px}
+#upload-method #ffmpegStatus{width:min(100%,680px);margin:12px auto 0;padding-top:10px;border-top:1px solid #252b38;text-align:center;line-height:1.65;overflow-wrap:anywhere;align-self:center}
+#upload-method .method-upload-note{width:min(100%,680px);margin:0 auto;text-align:center;color:var(--muted);font-size:11px;line-height:1.5;align-self:center}
+</style>
 </head>
 <body>
 <div class="background"></div><canvas id="starfield" aria-hidden="true"></canvas><div class="field-lines"><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 1600 1000"><g fill="none" stroke="#a8a8a8" stroke-opacity=".19" stroke-width="1"><path d="M0 200 Q500 170 900 215 T1600 200"></path><path d="M0 325 Q420 250 840 330 T1600 300"></path><path d="M0 520 Q450 470 800 510 T1600 525"></path><path d="M0 690 Q450 630 900 680 T1600 660"></path><path d="M0 840 Q500 820 900 845 T1600 825"></path></g><g class="yellow-lines" fill="none" stroke="#ffd23f" stroke-width="0" stroke-opacity="0"></g><g fill="#d8d8d8" fill-opacity=".6"><circle cx="172" cy="276" r="2.5"></circle><circle cx="278" cy="201" r="2.5"></circle><circle cx="645" cy="257" r="2.5"></circle><circle cx="1055" cy="280" r="2.5"></circle><circle cx="1300" cy="216" r="2.5"></circle><circle cx="1500" cy="325" r="2.5"></circle><circle cx="210" cy="520" r="2.5"></circle><circle cx="680" cy="506" r="2.5"></circle><circle cx="1090" cy="535" r="2.5"></circle><circle cx="1465" cy="505" r="2.5"></circle><circle cx="320" cy="685" r="2.5"></circle><circle cx="780" cy="650" r="2.5"></circle><circle cx="1200" cy="680" r="2.5"></circle></g></svg></div>
@@ -326,7 +331,7 @@ videoUpload.addEventListener('change',()=>showSelectedFile(videoUpload.files[0])
 for(const ev of ['dragenter','dragover'])dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.add('dragging')});
 for(const ev of ['dragleave','drop'])dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.remove('dragging')});
 dropZone.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f){showSelectedFile(f);}});
-const status=document.createElement('p');status.id='ffmpegStatus';status.className='ffmpeg-note';status.setAttribute('role','status');status.textContent='';document.querySelector('#upload-method .upload-engine').appendChild(status);
+const status=document.createElement('p');status.id='ffmpegStatus';status.className='ffmpeg-note';status.setAttribute('role','status');status.textContent='';const uploadEngine=document.querySelector('#upload-method .upload-engine');const uploadNote=uploadEngine.querySelector('.method-upload-note');uploadEngine.appendChild(status);if(uploadNote)status.insertAdjacentElement('afterend',uploadNote);
 function setStatus(message,percent=null){status.textContent=message;if(percent!==null)uploadProgress.style.width=Math.max(0,Math.min(100,percent))+'%';}
 function safeName(name){return name.replace(/[^a-zA-Z0-9._-]/g,'_').replace(/\.(mp4|mov)$/i,'')||'video';}
 videoUpload.addEventListener('change',()=>{const f=videoUpload.files[0];if(f){showSelectedFile(f);setStatus(lang==='id'?'Video dipilih. Tekan OPTIMALKAN VIDEO untuk mulai.':'Video selected. Press OPTIMIZE VIDEO to start.');}});
@@ -335,12 +340,12 @@ document.getElementById('optimizeBtn').addEventListener('click',async()=>{
  if(!file){setStatus(lang==='id'?'Pilih file MP4 atau MOV terlebih dahulu.':'Choose an MP4 or MOV file first.');videoUpload.click();return;}
  if(!/\.(mp4|mov)$/i.test(file.name)){setStatus(lang==='id'?'Format belum didukung. Gunakan MP4 atau MOV.':'Unsupported format. Use MP4 or MOV.');return;}
  if(file.size>500*1024*1024){setStatus(lang==='id'?'File melebihi batas 500 MB.':'File exceeds the 500 MB limit.');return;}
- const btn=document.getElementById('optimizeBtn');btn.disabled=true;btn.style.opacity='.6';
+ const btn=document.getElementById('optimizeBtn');btn.disabled=true;btn.style.opacity='.6';let etaTimer=null;let processStartedAt=0;
  try{
    setStatus(lang==='id'?'Mengunggah video ke server FFmpeg…':'Uploading video to the FFmpeg server…',0);
    const selectedMethod=document.querySelector('input[name="itscaleMethod"]:checked')?.value||'itscale2';
    const form=new FormData();form.append('video',file,file.name);form.append('method',selectedMethod);
-   const response=await fetch('https://destav1-ffmpeg-backend.onrender.com/process',{method:'POST',body:form});
+   processStartedAt=Date.now();const fileMB=file.size/(1024*1024);const estimatedSeconds=Math.max(15,Math.round(fileMB*(selectedMethod==='itscale4'?1.2:0.7)+12));const formatTime=seconds=>{seconds=Math.max(0,Math.round(seconds));const m=Math.floor(seconds/60),sec=seconds%60;return m?`${m} m ${sec} d`:`${sec} d`;};etaTimer=setInterval(()=>{const elapsed=(Date.now()-processStartedAt)/1000;const remaining=Math.max(0,estimatedSeconds-elapsed);const message=lang==='id'?`Sedang memproses video… Waktu berjalan: ${formatTime(elapsed)}. Estimasi total: sekitar ${formatTime(estimatedSeconds)} (sisa ±${formatTime(remaining)}). Estimasi dapat berubah sesuai ukuran video dan beban server.`:`Processing video… Elapsed: ${formatTime(elapsed)}. Estimated total: about ${formatTime(estimatedSeconds)} (approx. ${formatTime(remaining)} remaining). This estimate can vary with video size and server load.`;setStatus(message,Math.min(95,50+elapsed/estimatedSeconds*45));},1000);const response=await fetch('https://destav1-ffmpeg-backend.onrender.com/process',{method:'POST',body:form});if(etaTimer){clearInterval(etaTimer);etaTimer=null;}
    if(!response.ok){let detail='';try{detail=await response.text()}catch{};throw new Error('Server '+response.status+(detail?': '+detail.slice(0,220):''));}
    setStatus(lang==='id'?'Server sedang memproses video. Tunggu sampai selesai…':'Server is processing your video. Please wait…',50);
    const blob=await response.blob();
@@ -348,7 +353,7 @@ document.getElementById('optimizeBtn').addEventListener('click',async()=>{
    const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=safeName(file.name)+'_DestaV1_'+(selectedMethod==='itscale4'?'120FPS':'60FPS')+'.mp4';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
    setStatus(lang==='id'?'Selesai! Video hasil sedang diunduh.':'Done! Your processed video is downloading.',100);
  }catch(err){console.error(err);setStatus((lang==='id'?'Gagal memproses video: ':'Video processing failed: ')+(err?.message||'Unknown error')+'. Pastikan server Render aktif, lalu coba lagi.');}
- finally{btn.disabled=false;btn.style.opacity='1';}
+ finally{if(etaTimer)clearInterval(etaTimer);btn.disabled=false;btn.style.opacity='1';}
 });
 
 
