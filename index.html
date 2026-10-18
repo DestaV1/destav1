@@ -199,13 +199,22 @@ body{background:#080a0f}
 .bitrate-card:hover{transform:none!important}
 .bitrate-tip{line-height:1.7;text-align:center;max-width:850px;margin:12px auto 0}
 .bitrate-highlight{color:#ffca28;font-weight:800}
-.itscale-options{margin-top:22px}
+.itscale-options{box-sizing:border-box;margin:8px auto 0!important;position:relative;left:auto;right:auto;width:min(100%,680px);display:flex;justify-content:center;align-items:stretch;gap:10px;transform:none}
+#upload-method .fps-match-notice{margin-bottom:18px!important}
+@media(max-width:600px){.itscale-options{width:100%;gap:8px;margin-top:6px!important}}
 </style>
 
 <style id="destav1-status-layout-and-eta">
 #upload-method .upload-actions{display:flex;flex-direction:column;align-items:center;gap:10px}
 #upload-method #ffmpegStatus{width:min(100%,680px);margin:12px auto 0;padding-top:10px;border-top:1px solid #252b38;text-align:center;line-height:1.65;overflow-wrap:anywhere;align-self:center}
-#upload-method .method-upload-note{width:min(100%,680px);margin:0 auto;text-align:center;color:var(--muted);font-size:11px;line-height:1.5;align-self:center}
+#upload-method .method-upload-note{width:min(100%,680px);margin:8px auto 0;text-align:center;color:var(--muted);font-size:11px;line-height:1.5;align-self:center}
+</style>
+<style id="destav1-fps-match-notice">
+#upload-method .fps-match-notice{box-sizing:border-box;width:min(100%,620px);margin:34px auto 28px!important;position:relative;left:auto;transform:none;padding:15px 18px;text-align:center;border:1px solid #51451f;border-radius:12px;background:linear-gradient(145deg,#17170f,#10131a);color:var(--muted);font-size:11px;line-height:1.7}
+#upload-method .fps-match-notice strong{display:block;margin-bottom:8px;color:#ffd23f;font-size:11px;letter-spacing:.04em}
+#upload-method .fps-match-notice p{margin:4px 0;color:#e0e1e5}
+#upload-method .fps-match-notice span{display:block;margin-top:8px}
+@media(max-width:480px){#upload-method .fps-match-notice{width:calc(100% - 20px);margin:28px auto 26px!important;padding:12px 10px;font-size:10px}#upload-method .fps-match-notice strong{font-size:10px}}
 </style>
 </head>
 <body>
@@ -221,7 +230,7 @@ body{background:#080a0f}
 </div>
 <div class="hero-right"><div class="mock-panel" id="preview-panel"><div class="mode-list"><button class="mode-btn active" data-mode="topaz"><strong>TOPAZ</strong></button><button class="mode-btn" data-mode="cc"><strong>TOPAZ + CC</strong></button><button class="mode-btn" data-mode="dlss"><strong>TOPAZ + DLSS5</strong></button><button class="mode-btn" data-mode="full"><strong>TOPAZ + DLSS5 + CC</strong></button></div><div class="compare-box" id="compareBox"><div class="compare-labels" aria-hidden="true"><span id="beforeLabel">BEFORE</span><span id="afterLabel">AFTER TOPAZ</span></div><video autoplay="" id="rawVideo" loop="" muted="" playsinline="" preload="auto" src="https://files.catbox.moe/1bvl27.mp4"></video><video autoplay="" class="after" id="enhancedVideo" loop="" muted="" playsinline="" preload="auto" src="https://files.catbox.moe/jp23yx.mp4"></video><span class="divider" id="compareDivider"></span><input aria-label="Before and after slider" id="compareRange" max="100" min="0" type="range" value="50"/></div></div></div>
 </section>
-<section class="section container" id="upload-method"><span id="compare"></span><div class="showcase-feature reveal"><div class="editor-window"><div class="ffmpeg-panel upload-engine" data-i18n-panel=""><div class="engine-switch"><span class="engine-tab"><b>DestaV1 Method</b><small>(With FFmpeg)</small></span></div><input accept="video/mp4,video/quicktime,.mp4,.mov" hidden="" id="videoUpload" type="file"/><label class="drop-zone" for="videoUpload" id="dropZone"><span class="upload-icon">↓</span><strong data-en="Drop your video here" data-id="Taruh video kamu di sini">Taruh video kamu di sini</strong><span class="drop-sub" data-en="or click to browse · H.264 or H265 (HEVC), with audio" data-id="atau klik untuk memilih · H.264 atau H.265 (HEVC), dengan audio">atau klik untuk memilih · H.264 atau H.265 (HEVC), dengan audio</span></label><div class="bitrate-picker" aria-label="Ideal bitrate information">
+<section class="section container" id="upload-method"><span id="compare"></span><div class="showcase-feature reveal"><div class="editor-window"><div class="ffmpeg-panel upload-engine" data-i18n-panel=""><div class="engine-switch"><span class="engine-tab"><b>DestaV1 Method</b><small>(With FFmpeg)</small></span></div><div class="bitrate-picker" aria-label="Ideal bitrate information">
   <div class="bitrate-heading" data-en="IDEAL BITRATE" data-id="BITRATE IDEAL">BITRATE IDEAL</div>
   <div class="bitrate-cards" aria-label="Ideal bitrate by resolution">
     <div class="bitrate-card"><span class="bitrate-resolution">1080p · 60 FPS</span><strong>10–25 Mbps</strong></div>
@@ -229,12 +238,17 @@ body{background:#080a0f}
     <div class="bitrate-card"><span class="bitrate-resolution">4K · 60 FPS</span><strong>30–35 Mbps</strong></div>
   </div>
   <p class="bitrate-tip"><span data-en="The larger the video file, the greater the risk of lag when playing on TikTok." data-id="Semakin besar ukuran video, semakin berisiko video mengalami lag saat diputar di TikTok.">Semakin besar ukuran video, semakin berisiko video mengalami lag saat diputar di TikTok.</span> <span class="bitrate-highlight" data-en="Choose your bitrate wisely" data-id="Atur bitrate dengan bijak">Atur bitrate dengan bijak</span> <span data-en="and follow the ideal bitrate recommendations above." data-id="dan ikuti saran bitrate ideal di atas.">dan ikuti saran bitrate ideal di atas.</span></p>
+</div><input accept="video/mp4,video/quicktime,.mp4,.mov" hidden="" id="videoUpload" type="file"/><label class="drop-zone" for="videoUpload" id="dropZone"><span class="upload-icon">↓</span><strong data-en="Drop your video here" data-id="Taruh video kamu di sini">Taruh video kamu di sini</strong><span class="drop-sub" data-en="or click to browse · H.264 or H265 (HEVC), with audio" data-id="atau klik untuk memilih · H.264 atau H.265 (HEVC), dengan audio">atau klik untuk memilih · H.264 atau H.265 (HEVC), dengan audio</span></label>
+<div class="fps-match-notice" role="note" aria-label="Penting: sesuaikan FPS video">
+  <strong data-en="IMPORTANT — MATCH YOUR VIDEO FPS" data-id="PENTING — SESUAIKAN FPS VIDEO">PENTING — SESUAIKAN FPS VIDEO</strong>
+  <p data-en="60 FPS Method: Only use source videos with a frame rate of 60 FPS." data-id="Method 60 FPS: Hanya gunakan video sumber dengan frame rate 60 FPS.">Method 60 FPS: Hanya gunakan video sumber dengan frame rate 60 FPS.</p>
+  <p data-en="120 FPS Method: Only use source videos with a frame rate of 120 FPS." data-id="Method 120 FPS: Hanya gunakan video sumber dengan frame rate 120 FPS.">Method 120 FPS: Hanya gunakan video sumber dengan frame rate 120 FPS.</p>
+  <span data-en="Make sure the uploaded video's FPS matches the selected method for the intended result." data-id="Pastikan FPS video yang diunggah sesuai dengan pilihan method agar hasilnya sesuai dengan yang diharapkan.">Pastikan FPS video yang diunggah sesuai dengan pilihan method agar hasilnya sesuai dengan yang diharapkan.</span>
 </div>
 <div class="itscale-options" role="radiogroup" aria-label="Pilih target frame rate">
 <label class="itscale-option active" for="itscale2"><input id="itscale2" type="radio" name="itscaleMethod" value="itscale2" checked><span><strong>60 FPS</strong><small class="recommended-label" data-en="RECOMMENDED" data-id="REKOMENDASI">REKOMENDASI</small></span></label>
 <label class="itscale-option" for="itscale4"><input id="itscale4" type="radio" name="itscaleMethod" value="itscale4"><span><strong>120 FPS</strong><small> </small></span></label>
 </div>
-
 <div class="upload-meta"><div class="upload-track"><span id="uploadProgress"></span></div><span id="fileInfo">0.0 MB / 500 MB</span></div><div class="upload-actions"><button class="optimize-btn" id="optimizeBtn" type="button"><span aria-hidden="true">⚡</span> <span data-en="OPTIMIZE VIDEO" data-id="OPTIMALKAN VIDEO">OPTIMALKAN VIDEO</span></button><p class="method-upload-note" data-en="Upload the processed result through the website!" data-id="Upload hasil method melalui web!">Upload hasil method melalui web!</p></div></div></div></div></section>
 <section class="closing container" id="contact"><div class="closing-box reveal"><div class="eyebrow" style="justify-content:center">◆ COMMISSIONS / OPEN ◆</div><h2 data-i18n="closingTitle">Ready to enhance your <span style="color:var(--lime)">next clip?</span></h2><p data-i18n="closingCopy">Kirim pesan ke DestaV1 untuk membahas footage yang kamu inginkan.</p><a class="pill primary" data-i18n="closingCta" href="https://wa.me/6282219822569" rel="noopener" target="_blank"><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" style="vertical-align:middle;margin-right:8px"><path fill="currentColor" d="M20.52 3.48A11.82 11.82 0 0 0 12.08 0C5.5 0 .15 5.35.15 11.93c0 2.1.55 4.15 1.6 5.96L.05 24l6.27-1.64a11.9 11.9 0 0 0 5.75 1.47h.01c6.58 0 11.93-5.35 11.93-11.93 0-3.18-1.24-6.17-3.49-8.42ZM12.08 21.8h-.01a9.88 9.88 0 0 1-5.03-1.37l-.36-.21-3.72.97.99-3.63-.24-.37a9.85 9.85 0 0 1-1.52-5.26c0-5.45 4.44-9.89 9.9-9.89a9.83 9.83 0 0 1 7 2.9 9.83 9.83 0 0 1 2.9 7c0 5.46-4.44 9.9-9.91 9.9Zm5.43-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.49s1.07 2.89 1.22 3.09c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg><span data-i18n="closingCta">Hubungi via WhatsApp</span></a></div></section>
 </main>
@@ -805,4 +819,70 @@ document.querySelectorAll('input[name="bitratePreset"]').forEach(input=>input.ad
 }
 </style>
 
+
+<style id="destav1-fps-position-final-fix">
+/* Keep FPS choices truly centered and visibly lower than the instruction box. */
+#upload-method .itscale-options{
+  width:min(100%,620px)!important;
+  margin:30px auto 30px!important;
+  position:relative!important;left:auto!important;right:auto!important;
+  display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  justify-content:center!important;align-items:stretch!important;
+  gap:12px!important;transform:translateY(14px)!important;
+  float:none!important;
+}
+#upload-method .itscale-option{width:100%!important;box-sizing:border-box!important;margin:0!important;}
+@media(max-width:600px){
+ #upload-method .itscale-options{width:100%!important;gap:8px!important;margin:24px auto 24px!important;transform:translateY(10px)!important;}
+}
+</style>
+
+
+<style id="destav1-fps-centering-final-v3">
+/* Visibly center the FPS pair in the full upload panel and move it farther down. */
+#upload-method .itscale-options{
+  width:min(100%,500px)!important;
+  max-width:500px!important;
+  margin:42px auto 42px!important;
+  padding:0!important;
+  left:0!important;right:0!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  justify-content:center!important;
+  justify-items:stretch!important;
+  align-items:stretch!important;
+  gap:12px!important;
+  transform:translateY(22px)!important;
+  float:none!important;
+  box-sizing:border-box!important;
+}
+#upload-method .itscale-option{width:100%!important;min-width:0!important;margin:0!important;box-sizing:border-box!important;}
+@media(max-width:600px){
+ #upload-method .itscale-options{width:min(100%,500px)!important;margin:30px auto 30px!important;gap:8px!important;transform:translateY(16px)!important;}
+}
+</style>
+
+
+<style id="destav1-method-unified-spacing-final">
+/* Match every vertical gap in DestaV1 Method to the pink reference spacing (~16px). */
+#upload-method .upload-engine{padding-top:16px!important;padding-bottom:16px!important;}
+#upload-method .engine-switch{margin:0 auto 16px!important;}
+#upload-method .bitrate-picker{margin:16px auto!important;width:min(100%,850px)!important;}
+#upload-method .drop-zone{margin:16px auto 0!important;}
+#upload-method .fps-match-notice{margin:16px auto!important;width:min(100%,620px)!important;left:auto!important;transform:none!important;}
+#upload-method .itscale-options{margin:16px auto!important;width:min(100%,540px)!important;justify-content:center!important;gap:10px!important;position:relative!important;left:auto!important;right:auto!important;transform:none!important;}
+#upload-method .itscale-option{min-width:0!important;flex:1 1 0!important;}
+#upload-method .upload-meta{margin:16px auto!important;width:100%!important;}
+#upload-method .upload-actions{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:6px!important;width:100%!important;}
+#upload-method .method-upload-note{margin:0 auto!important;}
+@media(max-width:700px){
+ #upload-method .upload-engine{padding-top:14px!important;padding-bottom:14px!important;}
+ #upload-method .engine-switch{margin-bottom:14px!important;}
+ #upload-method .bitrate-picker{margin:14px auto!important;}
+ #upload-method .drop-zone{margin-top:14px!important;}
+ #upload-method .fps-match-notice{margin:14px auto!important;padding:13px 14px!important;}
+ #upload-method .itscale-options{width:100%!important;gap:8px!important;margin:14px auto!important;}
+ #upload-method .upload-meta{margin:14px auto!important;}
+}
+</style>
 </body></html>
