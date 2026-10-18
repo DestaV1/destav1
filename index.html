@@ -216,6 +216,18 @@ body{background:#080a0f}
 #upload-method .fps-match-notice span{display:block;margin-top:8px}
 @media(max-width:480px){#upload-method .fps-match-notice{width:calc(100% - 20px);margin:28px auto 26px!important;padding:12px 10px;font-size:10px}#upload-method .fps-match-notice strong{font-size:10px}}
 </style>
+<style id="destav1-fps-notice-text-center-fix">
+/* Center the FPS instruction lines themselves */
+#upload-method .fps-match-notice p,
+#upload-method .fps-match-notice span {
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+</style>
 </head>
 <body>
 <div class="background"></div><canvas id="starfield" aria-hidden="true"></canvas><div class="field-lines"><svg aria-hidden="true" preserveaspectratio="none" viewbox="0 0 1600 1000"><g fill="none" stroke="#a8a8a8" stroke-opacity=".19" stroke-width="1"><path d="M0 200 Q500 170 900 215 T1600 200"></path><path d="M0 325 Q420 250 840 330 T1600 300"></path><path d="M0 520 Q450 470 800 510 T1600 525"></path><path d="M0 690 Q450 630 900 680 T1600 660"></path><path d="M0 840 Q500 820 900 845 T1600 825"></path></g><g class="yellow-lines" fill="none" stroke="#ffd23f" stroke-width="0" stroke-opacity="0"></g><g fill="#d8d8d8" fill-opacity=".6"><circle cx="172" cy="276" r="2.5"></circle><circle cx="278" cy="201" r="2.5"></circle><circle cx="645" cy="257" r="2.5"></circle><circle cx="1055" cy="280" r="2.5"></circle><circle cx="1300" cy="216" r="2.5"></circle><circle cx="1500" cy="325" r="2.5"></circle><circle cx="210" cy="520" r="2.5"></circle><circle cx="680" cy="506" r="2.5"></circle><circle cx="1090" cy="535" r="2.5"></circle><circle cx="1465" cy="505" r="2.5"></circle><circle cx="320" cy="685" r="2.5"></circle><circle cx="780" cy="650" r="2.5"></circle><circle cx="1200" cy="680" r="2.5"></circle></g></svg></div>
