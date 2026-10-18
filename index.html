@@ -300,27 +300,10 @@ videoUpload.addEventListener('change',()=>showSelectedFile(videoUpload.files[0])
 for(const ev of ['dragenter','dragover'])dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.add('dragging')});
 for(const ev of ['dragleave','drop'])dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.remove('dragging')});
 dropZone.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f){showSelectedFile(f);}});
-let ffmpegInstance=null, ffmpegLoading=false;
 const status=document.createElement('p');status.id='ffmpegStatus';status.className='ffmpeg-note';status.setAttribute('role','status');status.textContent='';document.querySelector('#upload-method .upload-engine').appendChild(status);
 function setStatus(message,percent=null){status.textContent=message;if(percent!==null)uploadProgress.style.width=Math.max(0,Math.min(100,percent))+'%';}
 function safeName(name){return name.replace(/[^a-zA-Z0-9._-]/g,'_').replace(/\.(mp4|mov)$/i,'')||'video';}
-async function loadFFmpeg(){
- if(ffmpegInstance)return ffmpegInstance;
- if(ffmpegLoading)throw new Error('FFmpeg sedang dimuat. Tunggu sebentar lalu coba lagi.');
- ffmpegLoading=true;
- try{
-   setStatus(lang==='id'?'Memuat mesin FFmpeg pertama kali. Tunggu, ini bisa memakan waktu…':'Loading FFmpeg for the first time. Please wait…');
-   const {FFmpeg}=await import('https://esm.sh/@ffmpeg/ffmpeg@0.12.10');
-   const {toBlobURL}=await import('https://esm.sh/@ffmpeg/util@0.12.1');
-   const ffmpeg=new FFmpeg();
-   ffmpeg.on('progress',({progress})=>{const pct=Math.max(0,Math.min(100,Math.round(progress*100)));setStatus((lang==='id'?'Memproses video: ':'Processing video: ')+pct+'%',pct);});
-   ffmpeg.on('log',({message})=>{if(/error/i.test(message))console.warn('FFmpeg:',message);});
-   const base='https://unpkg.com/@ffmpeg/core@0.12.6/dist/umd';
-   await ffmpeg.load({coreURL:await toBlobURL(base+'/ffmpeg-core.js','text/javascript'),wasmURL:await toBlobURL(base+'/ffmpeg-core.wasm','application/wasm')});
-   ffmpegInstance=ffmpeg;return ffmpeg;
- } finally {ffmpegLoading=false;}
-}
-videoUpload.addEventListener('change',()=>{const f=videoUpload.files[0];if(f){showSelectedFile(f);setStatus('Video dipilih. Tekan OPTIMALKAN VIDEO untuk mulai.');}});
+videoUpload.addEventListener('change',()=>{const f=videoUpload.files[0];if(f){showSelectedFile(f);setStatus(lang==='id'?'Video dipilih. Tekan OPTIMALKAN VIDEO untuk mulai.':'Video selected. Press OPTIMIZE VIDEO to start.');}});
 document.getElementById('optimizeBtn').addEventListener('click',async()=>{
  const file=videoUpload.files[0];
  if(!file){setStatus(lang==='id'?'Pilih file MP4 atau MOV terlebih dahulu.':'Choose an MP4 or MOV file first.');videoUpload.click();return;}
@@ -328,18 +311,16 @@ document.getElementById('optimizeBtn').addEventListener('click',async()=>{
  if(file.size>500*1024*1024){setStatus(lang==='id'?'File melebihi batas 500 MB.':'File exceeds the 500 MB limit.');return;}
  const btn=document.getElementById('optimizeBtn');btn.disabled=true;btn.style.opacity='.6';
  try{
-   setStatus(lang==='id'?'Menyiapkan FFmpeg…':'Preparing FFmpeg…',0);
-   const ffmpeg=await loadFFmpeg();
-   const input=safeName(file.name)+( /\.mov$/i.test(file.name)?'.mov':'.mp4');
-   const output=safeName(file.name)+'_DestaV1_2x_60fps.mp4';
-   setStatus(lang==='id'?'Membaca file video…':'Reading video file…',2);
-   await ffmpeg.writeFile(input,new Uint8Array(await file.arrayBuffer()));
-   setStatus(lang==='id'?'Mengoptimalkan video… jangan tutup halaman ini.':'Optimizing video… do not close this page.',5);
-   await ffmpeg.exec(['-i',input,'-vf','scale=iw*2:ih*2:flags=lanczos,fps=60','-c:v','libx264','-preset','ultrafast','-crf','18','-pix_fmt','yuv420p','-c:a','aac','-b:a','192k','-movflags','+faststart',output]);
-   const data=await ffmpeg.readFile(output);const blob=new Blob([data.buffer],{type:'video/mp4'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=output;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
-   setStatus(lang==='id'?'Selesai! Video hasil sedang diunduh.':'Done! Your enhanced video is downloading.',100);
-   await ffmpeg.deleteFile(input);await ffmpeg.deleteFile(output);
- }catch(err){console.error(err);setStatus((lang==='id'?'Gagal memproses video: ':'Video processing failed: ')+(err?.message||'Unknown error')+'. Coba file lebih kecil atau browser Chrome/Edge terbaru.');}
+   setStatus(lang==='id'?'Mengunggah video ke server FFmpeg…':'Uploading video to the FFmpeg server…',0);
+   const form=new FormData();form.append('video',file,file.name);form.append('method','itscale2');
+   const response=await fetch('https://destav1-ffmpeg-backend.onrender.com/process',{method:'POST',body:form});
+   if(!response.ok){let detail='';try{detail=await response.text()}catch{};throw new Error('Server '+response.status+(detail?': '+detail.slice(0,220):''));}
+   setStatus(lang==='id'?'Server sedang memproses video. Tunggu sampai selesai…':'Server is processing your video. Please wait…',50);
+   const blob=await response.blob();
+   if(!blob.size)throw new Error('Server mengembalikan file kosong.');
+   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=safeName(file.name)+'_DestaV1.mp4';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+   setStatus(lang==='id'?'Selesai! Video hasil sedang diunduh.':'Done! Your processed video is downloading.',100);
+ }catch(err){console.error(err);setStatus((lang==='id'?'Gagal memproses video: ':'Video processing failed: ')+(err?.message||'Unknown error')+'. Pastikan server Render aktif, lalu coba lagi.');}
  finally{btn.disabled=false;btn.style.opacity='1';}
 });
 
