@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=1180,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#05030d">
 <title>DestaV1 — Jasa Video Enhancement HD</title>
 <meta name="description" content="DestaV1 menyediakan jasa peningkatan kualitas video gameplay: Topaz AI, Color Correction, dan DLSS 5. Lihat perbandingan before/after, lalu pesan lewat WhatsApp.">
@@ -105,7 +105,7 @@ body{position:relative}
 .head p{color:var(--muted);max-width:600px;margin:0 auto}
 
 /* Preview studio */
-.studio{--a1:#8b6cff;--a2:#6aa5ff;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:26px;
+.studio{--a1:#8b6cff;--a2:#6aa5ff;display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:14px;padding:14px;border:1px solid var(--line);border-radius:26px;
   background:linear-gradient(145deg,#100a22,#070412);box-shadow:0 30px 90px rgba(0,0,0,.6)}
 .st-main,.st-side{min-width:0;border:1px solid var(--line);border-radius:20px;background:rgba(8,4,20,.55);padding:14px}
 .compare{position:relative;width:100%;aspect-ratio:4/3;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#03010a;touch-action:pan-y}
@@ -153,6 +153,9 @@ body{position:relative}
 /* Cards */
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid2 .card .btn{margin-top:18px;width:100%}
+.grid2 .card .tag{margin-top:16px}
 .card{position:relative;border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(145deg,#150d2c,#080514);padding:22px;transition:.2s;display:flex;flex-direction:column}
 .card:hover{border-color:#7a63d6;transform:translateY(-3px);box-shadow:0 14px 40px rgba(0,0,0,.45)}
 .card .idx{font:500 11px var(--mono);color:var(--gold);letter-spacing:.1em}
@@ -280,6 +283,114 @@ h1,h2,h3,.brand,.brand b,.stat strong,.hero .sub,.engine-tab b,.btn,.go,.cmp,.vp
 .card:hover{box-shadow:0 14px 40px rgba(0,0,0,.45),0 0 32px rgba(139,108,255,.18)}
 .eyebrow,.kicker{color:var(--blue)}
 .chip b,.card .idx,.card .tag button{color:var(--gold)}
+
+/* ===== responsive: desktop 2 kolom, mobile tersusun rapi ===== */
+@media(max-width:900px){
+  .studio{grid-template-columns:1fr}
+  .st-side{display:flex;flex-direction:column}
+}
+@media(max-width:760px){
+  .nav-links{overflow-x:auto;justify-content:flex-start;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{flex:0 0 auto;padding:8px 12px;font-size:12px}
+  .hero h1{font-size:clamp(46px,15vw,72px)}
+  .head h2,.cta h2{font-size:clamp(26px,8vw,34px)}
+  .compare{aspect-ratio:16/11}
+  .st-bar{flex-wrap:wrap}
+  .opt{padding:10px;gap:10px}.opt .oi{width:34px;height:34px}
+  .st-note{margin:10px 0 14px}
+  .panel.method{padding:18px 14px;border-radius:22px}
+  .engine-tab b{padding:10px 22px;font-size:15px}
+  .drop{min-height:190px;padding:24px 14px}
+  .card{padding:18px}
+}
+
+/* ===== mobile: jarak antar elemen dilonggarkan ===== */
+@media(max-width:760px){
+  .container{width:calc(100% - 40px)}
+  .hero{padding:72px 0 28px}
+  .logo-wrap{margin-bottom:34px}
+  .hero h1{margin:18px 0 22px}
+  .hero .sub{margin:0 0 18px}
+  .hero .copy{line-height:1.75}
+  .socials{gap:14px;margin-top:40px}
+  .section{padding:112px 0 0}
+  .head{margin-bottom:44px}
+  .head h2{margin:16px 0 18px}
+  .head p{line-height:1.75}
+  .studio{gap:22px;padding:18px;border-radius:24px}
+  .st-main,.st-side{padding:20px}
+  .st-bar{gap:16px;margin-top:20px}
+  .sec{margin:8px 0 20px}
+  .opt{padding:16px;gap:14px;margin-bottom:14px}
+  .st-note{margin:20px 0 28px;line-height:1.7}
+  .grid4,.grid3{gap:20px}
+  .card{padding:26px}
+  .card h3{margin:24px 0 12px}
+  .panel.method{padding:28px 20px}
+  .engine-tab{margin-bottom:8px}
+  .bitrate{padding:22px 18px;margin-bottom:26px}
+  .bitrate .t{margin-bottom:20px}
+  .bitrate .cards{gap:12px}
+  .bitrate p{margin-top:20px;line-height:1.7}
+  .drop{gap:14px;padding:32px 18px;margin-bottom:26px}
+  .fps{gap:14px;margin-bottom:28px}
+  .fps label{padding:16px}
+  .cta{padding:42px 24px}
+  .cta h2{margin-bottom:18px}
+  .cta p{margin-bottom:32px;line-height:1.75}
+  .footer{margin-top:112px;padding:34px 0 44px}
+  .footer .row{gap:22px}
+}
+
+/* ===== mobile: social & preview tetap menyamping seperti desktop ===== */
+@media(max-width:900px){
+  .studio{grid-template-columns:minmax(0,1fr) minmax(0,255px)}
+  .st-side{display:block}
+}
+@media(max-width:760px){
+  .socials{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:36px}
+  .social{flex-direction:column;gap:6px;padding:12px 4px;font-size:10.5px;border-radius:12px}
+  .social .ico{width:28px;height:28px}
+  .social .ico svg,.social .ico img{width:16px;height:16px}
+
+  .studio{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:8px;padding:8px;border-radius:18px}
+  .st-main,.st-side{padding:8px;border-radius:14px}
+  .compare{border-radius:10px}
+  .compare .labels{top:6px;left:6px;right:6px;font-size:7.5px}
+  .compare .labels span{padding:3px 6px;border-radius:6px}
+  .divider:after{width:22px;height:22px;font-size:11px}
+  .st-bar{flex-wrap:wrap;gap:6px;margin-top:8px}
+  .play{width:30px;height:30px;font-size:10px}
+  .time{font-size:8px;order:2}
+  .cmp{padding:5px 8px;font-size:9px;border-radius:8px;order:3;margin-left:auto}
+  .seek{order:4;flex:1 1 100%}
+  .sec{font-size:8px;gap:6px;margin:2px 0 8px;letter-spacing:.1em}
+  .sec .num{width:16px;height:16px;font-size:8px;border-radius:6px}
+  .opt{padding:7px;gap:6px;margin-bottom:6px;border-radius:10px}
+  .opt .oi{width:22px;height:22px;font-size:10px;border-radius:7px}
+  .opt b{font-size:9.5px;gap:4px;flex-wrap:wrap}
+  .opt small{font-size:8px;line-height:1.3}
+  .badge{font-size:6px;padding:2px 4px}
+  .st-note{margin:8px 0 12px;padding:7px 8px;font-size:8px;line-height:1.45;border-radius:9px}
+  .vps{gap:5px;margin-bottom:12px}
+  .vp{padding:5px 8px;font-size:8.5px}
+  .st-side .btn{font-size:9px;padding:8px 6px;gap:4px;border-radius:10px}
+}
+
+/* ===== preview: video mengisi tinggi kolom kiri (tanpa ruang kosong) ===== */
+.st-main{display:flex;flex-direction:column}
+.st-main .compare{flex:1 1 auto;aspect-ratio:auto;min-height:260px}
+.st-main .st-bar{flex:none}
+@media(max-width:760px){.studio{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr)}.st-main{align-self:stretch}.st-main .compare{flex:1 1 auto;aspect-ratio:auto;min-height:220px}.compare video{object-position:center center}}
+
+/* ===== mobile nav: semua menu muat dalam satu baris ===== */
+@media(max-width:760px){
+  .nav-links{overflow:visible;justify-content:space-between;gap:0;padding:4px}
+  .nav-links a{flex:1 1 auto;text-align:center;padding:9px 4px;font-size:11.5px;white-space:nowrap;letter-spacing:-.01em}
+}
+@media(max-width:380px){.nav-links a{font-size:10.5px;padding:9px 2px}}
+@media(max-width:760px){.grid2{gap:12px}.grid2 .card{padding:18px 14px}.grid2 .card h3{font-size:15px}.grid2 .card p{font-size:11.5px}.grid2 .card .btn{font-size:11px;padding:10px 6px;gap:5px}.grid2 .card .btn svg{width:15px;height:15px}}
 </style>
 </head>
 <body>
@@ -375,6 +486,20 @@ h1,h2,h3,.brand,.brand b,.stat strong,.hero .sub,.engine-tab b,.btn,.go,.cmp,.vp
    <article class="card reveal"><span class="idx">02</span><h3>Topaz + CC</h3><p data-id="Detail enhancement yang dipadukan dengan color correction untuk karakter warna yang lebih kuat." data-en="Detail enhancement paired with color correction for a stronger color character.">Detail enhancement yang dipadukan dengan color correction untuk karakter warna yang lebih kuat.</p><div class="tag"><span>DETAIL / COLOR</span><button type="button" data-select="cc" data-id="Lihat →" data-en="View →">Lihat →</button></div></article>
    <article class="card reveal"><span class="idx">03</span><h3>Topaz + DLSS 5</h3><p data-id="Kombinasi enhancement dan visual treatment DLSS 5 untuk look yang berbeda." data-en="A combination of enhancement and DLSS 5 visual treatment for a different look.">Kombinasi enhancement dan visual treatment DLSS 5 untuk look yang berbeda.</p><div class="tag"><span>DETAIL / VISUAL</span><button type="button" data-select="dlss" data-id="Lihat →" data-en="View →">Lihat →</button></div></article>
    <article class="card reveal"><span class="idx">04</span><h3>Topaz + DLSS 5 + CC</h3><p data-id="Kombinasi treatment detail, visual look, dan color correction untuk finishing lengkap." data-en="Combined detail, visual look, and color correction for a complete finish.">Kombinasi treatment detail, visual look, dan color correction untuk finishing lengkap.</p><div class="tag"><span>FULL FINISH</span><button type="button" data-select="full" data-id="Lihat →" data-en="View →">Lihat →</button></div></article>
+  </div>
+ </section>
+
+ 
+
+ <section class="section container" id="produk">
+  <div class="head reveal">
+   <div class="kicker">◆ <span data-id="JENIS LAYANAN" data-en="WHAT WE OFFER">JENIS LAYANAN</span></div>
+   <h2 data-id="Jasa HD video & setingan" data-en="HD video service &amp; settings">Jasa HD video &amp; setingan</h2>
+   <p data-id="Mau videomu diproses langsung, atau mau mengerjakan sendiri dengan setingan yang sudah siap? Pilih sesuai kebutuhanmu." data-en="Want your video processed for you, or prefer to do it yourself with ready-made settings? Pick what fits you.">Mau videomu diproses langsung, atau mau mengerjakan sendiri dengan setingan yang sudah siap? Pilih sesuai kebutuhanmu.</p>
+  </div>
+  <div class="grid2">
+   <article class="card reveal"><span class="idx">01</span><h3 data-id="Jasa HD Video" data-en="HD Video Service">Jasa HD Video</h3><p data-id="Kirim footage kamu, lalu videonya diproses dengan treatment pilihan sampai hasilnya HD dan siap diupload." data-en="Send your footage and it is processed with your chosen treatment until it is HD and ready to upload.">Kirim footage kamu, lalu videonya diproses dengan treatment pilihan sampai hasilnya HD dan siap diupload.</p><div class="tag"><span data-id="DIKERJAKAN UNTUKMU" data-en="DONE FOR YOU">DIKERJAKAN UNTUKMU</span></div><a class="btn primary" href="https://wa.me/6282219822569?text=Halo%20DestaV1%21%20%F0%9F%91%8B%20Saya%20tertarik%20dengan%20jasa%20HD%20video." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg><span data-id="Pesan Jasa HD" data-en="Order HD service">Pesan Jasa HD</span></a></article>
+   <article class="card reveal"><span class="idx">02</span><h3 data-id="Beli Setingan" data-en="Buy Settings">Beli Setingan</h3><p data-id="Dapatkan setingan siap pakai untuk meng-HD-kan videomu sendiri di perangkatmu, tanpa perlu mengirim footage." data-en="Get ready-to-use settings to HD your own videos on your device, with no need to send your footage.">Dapatkan setingan siap pakai untuk meng-HD-kan videomu sendiri di perangkatmu, tanpa perlu mengirim footage.</p><div class="tag"><span data-id="KERJAKAN SENDIRI" data-en="DO IT YOURSELF">KERJAKAN SENDIRI</span></div><a class="btn primary" href="https://wa.me/6282219822569?text=Halo%20DestaV1%21%20%F0%9F%91%8B%20Saya%20tertarik%20membeli%20setingan%20HD%20video." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg><span data-id="Beli Setingan" data-en="Buy settings">Beli Setingan</span></a></article>
   </div>
  </section>
 
